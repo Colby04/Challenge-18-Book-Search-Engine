@@ -10,6 +10,33 @@ interface JwtPayload {
   email: string,
 }
 
+export const createToken = (user: any) => {
+  const payload = { _id: user._id, username: user.username, email: user.email };
+  const secretKey = process.env.JWT_SECRET_KEY || '';
+
+  return jwt.sign(payload, secretKey, { expiresIn: '1h' });
+}
+
+export const authMiddleware = (req: Request, res: Response, next: NextFunction) => {
+  const token = req.headers.authorization?.split(' ')[1];
+  
+  if (!token) {
+    return res.status(401).send('Authorization token required');
+  }
+
+  try {
+    const secretKey = process.env.JWT_SECRET;
+    if (!secretKey) {
+      return res.status(500).send('JWT secret is not defined');
+    }
+    const decoded = jwt.verify(token, secretKey);
+    req.user = decoded as JwtPayload;
+    return next();
+  } catch (error) {
+    return res.status(401).send('Invalid token');
+  }
+};
+
 export const authenticateToken = (req: Request, res: Response, next: NextFunction) => {
   const authHeader = req.headers.authorization;
 
@@ -34,6 +61,7 @@ export const authenticateToken = (req: Request, res: Response, next: NextFunctio
 export const signToken = (username: string, email: string, _id: unknown) => {
   const payload = { username, email, _id };
   const secretKey = process.env.JWT_SECRET_KEY || '';
+  
 
   return jwt.sign(payload, secretKey, { expiresIn: '1h' });
 };
