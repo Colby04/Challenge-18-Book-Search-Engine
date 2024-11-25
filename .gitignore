@@ -7,6 +7,23 @@ yarn-error.log*
 lerna-debug.log*
 .pnpm-debug.log*
 
+
+######################
+# Mac OSX
+######################
+.DS_Store
+.svn
+
+######################
+# Node
+######################
+/node/
+node_tmp/
+node_modules/
+npm-debug.log.*
+/.awcache/*
+/.cache-loader/*
+
 # Diagnostic reports (https://nodejs.org/api/report.html)
 report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
 
