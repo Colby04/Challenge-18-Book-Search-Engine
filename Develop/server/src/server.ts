@@ -1,5 +1,5 @@
 import express, { Application } from 'express';
-import path from 'node:path';
+import path from 'path'; // Use 'path' from the standard library
 import { ApolloServer } from 'apollo-server-express';
 import { typeDefs, resolvers } from './schema';
 import db from './config/connection';
